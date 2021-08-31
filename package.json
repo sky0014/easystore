@@ -1,0 +1,27 @@
+{
+  "name": "@sky0014/easystore",
+  "version": "1.0.0",
+  "description": "An easy store for react and hooks.",
+  "main": "src/index.js",
+  "scripts": {
+    "pub": "npm publish --registry=http://registry.npmjs.org --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sky0014/easystore.git"
+  },
+  "keywords": [],
+  "author": "sky0014 <sky-wang@qq.com>",
+  "bugs": {
+    "url": "https://github.com/sky0014/easystore/issues"
+  },
+  "homepage": "https://github.com/sky0014/easystore/#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "@sky0014/logger": "^1.0.2",
+    "immer": "^9.0.5",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.1",
+    "redux-logger": "^3.0.6"
+  }
+}
