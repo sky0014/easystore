@@ -1,5 +1,5 @@
 import produce from "immer";
-import { useSelector } from "react-redux";
+import { useSelector, Provider } from "react-redux";
 import { applyMiddleware, compose, createStore as _createStore } from "redux";
 import reduxLogger from "redux-logger";
 import logger from "@sky0014/logger";
@@ -75,7 +75,7 @@ const reducer = produce((state, action) => {
   }
 });
 
-export function getData(path) {
+function getData(path) {
   if (!store) {
     throw new Error("you must create store first!");
   }
@@ -85,11 +85,11 @@ export function getData(path) {
 
 // react hooks
 // 不给默认值参数，以免上层使用方式不对造成不必要的组件刷新
-export function useData(path) {
+function useData(path) {
   return useSelector((state) => internalGetData(state, path));
 }
 
-export function register(m) {
+function register(m) {
   if (moduleMap[m.id]) {
     throw new Error(`module id=${m.id} already exist!`);
   }
@@ -139,7 +139,7 @@ export function register(m) {
   }
 }
 
-export async function call(path, ...params) {
+async function call(path, ...params) {
   const action = actions[path];
 
   if (!action) {
@@ -150,7 +150,7 @@ export async function call(path, ...params) {
   return await action(...params);
 }
 
-export function createStore({ middlewares, debug } = {}) {
+function createStore({ middlewares, debug } = {}) {
   if (!middlewares) {
     middlewares = [];
   }
@@ -161,3 +161,5 @@ export function createStore({ middlewares, debug } = {}) {
   middlewares = middlewares.map((v) => applyMiddleware(v));
   return (store = _createStore(reducer, initialState, compose(...middlewares)));
 }
+
+export { Provider, getData, useData, register, call, createStore };
