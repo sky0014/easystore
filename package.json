@@ -1,6 +1,6 @@
 {
   "name": "@sky0014/easystore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An easy store for react and hooks.",
   "main": "src/index.js",
   "scripts": {
