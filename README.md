@@ -141,7 +141,7 @@ export default Todo;
 If your first time publish a package, login first:
 
 ```bash
-npm login --registry=http://registry.npmjs.org
+npm login --registry=https://registry.npmjs.org
 ```
 
 Then you can publish:

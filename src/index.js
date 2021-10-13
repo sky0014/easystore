@@ -119,8 +119,9 @@ function register(m) {
 
       // check duplicated reducers/effects
       if (actions[path]) {
-        logger.warn(`unsupport duplicated reducers/effects, check it: ${path}`);
-        return;
+        throw new Error(
+          `unsupport duplicated reducers/effects, check it: ${path}`
+        );
       }
 
       const produce = (func) => {
