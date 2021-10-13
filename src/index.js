@@ -2,7 +2,9 @@ import produce from "immer";
 import { useSelector, Provider } from "react-redux";
 import { applyMiddleware, compose, createStore as _createStore } from "redux";
 import reduxLogger from "redux-logger";
-import logger from "@sky0014/logger";
+import { createLogger } from "@sky0014/logger";
+
+const logger = createLogger();
 
 logger.initLogger({
   enable: false,

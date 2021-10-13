@@ -1,6 +1,6 @@
 {
   "name": "@sky0014/easystore",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An easy store for react and hooks.",
   "main": "src/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/sky0014/easystore/#readme",
   "devDependencies": {},
   "dependencies": {
-    "@sky0014/logger": "^1.0.2",
+    "@sky0014/logger": "^1.0.4",
     "immer": "^9.0.5",
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
