@@ -4,11 +4,13 @@ import { applyMiddleware, compose, createStore as _createStore } from "redux";
 import reduxLogger from "redux-logger";
 import { createLogger } from "@sky0014/logger";
 
+const PREFIX = "easystore";
+
 const logger = createLogger();
 
 logger.initLogger({
   enable: false,
-  prefix: "easystore",
+  prefix: PREFIX,
 });
 
 let store;
@@ -79,7 +81,7 @@ const reducer = produce((state, action) => {
 
 function getData(path) {
   if (!store) {
-    throw new Error("you must create store first!");
+    throw new Error(`[${PREFIX}] you must create store first!`);
   }
 
   return internalGetData(store.getState(), path);
@@ -93,7 +95,7 @@ function useData(path) {
 
 function register(m) {
   if (moduleMap[m.id]) {
-    throw new Error(`module id=${m.id} already exist!`);
+    throw new Error(`[${PREFIX}] module id=${m.id} already exist!`);
   }
 
   moduleMap[m.id] = m;
@@ -120,7 +122,7 @@ function register(m) {
       // check duplicated reducers/effects
       if (actions[path]) {
         throw new Error(
-          `unsupport duplicated reducers/effects, check it: ${path}`
+          `[${PREFIX}] unsupport duplicated reducers/effects, check it: ${path}`
         );
       }
 
