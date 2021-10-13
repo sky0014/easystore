@@ -1,10 +1,10 @@
 {
   "name": "@sky0014/easystore",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An easy store for react and hooks.",
   "main": "src/index.js",
   "scripts": {
-    "pub": "npm publish --registry=http://registry.npmjs.org --access public"
+    "pub": "npm publish --registry=https://registry.npmjs.org --access public"
   },
   "repository": {
     "type": "git",

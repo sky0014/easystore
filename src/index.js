@@ -113,14 +113,22 @@ function register(m) {
 
   m.effects &&
     Object.keys(m.effects).forEach((k) => {
+      const path = `${m.id}/${k}`;
+
+      // check duplicated reducers/effects
+      if (actions[path]) {
+        logger.warn(`unsupport duplicated reducers/effects, check it: ${path}`);
+        return;
+      }
+
       const produce = (func) => {
         store.dispatch({
-          type: `${m.id}/${k} async PRODUCE`,
+          type: `${path} async PRODUCE`,
           skipCheck: true,
           produce: func,
         });
       };
-      actions[`${m.id}/${k}`] = localActions[k] = async (...params) => {
+      actions[path] = localActions[k] = async (...params) => {
         store.dispatch({
           type: `${m.id}/${k} async START`,
           skipCheck: true,

@@ -2,6 +2,8 @@
 
 An easy store for react and hooks.
 
+Inspired by [icestore](https://github.com/ice-lab/icestore)
+
 ## Install
 
 ```bash
