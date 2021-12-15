@@ -1,5 +1,5 @@
 import { Middleware, createStore as _createStore } from "redux";
-import { Provider as _Provider } from "react-redux";
+import { Provider } from "react-redux";
 
 export interface StoreModule<T> {
   /** 模块唯一id */
@@ -27,7 +27,7 @@ interface Config {
 }
 
 /** 同react-redux Provider */
-export const Provider: typeof _Provider;
+export { Provider };
 /**
  * 获取store里的数据
  * @param path 数据路径，以.分割，例如：app.name
