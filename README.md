@@ -41,8 +41,8 @@ export default {
     },
   ],
 
-  // 同步方法
-  reducers: {
+  actions: {
+    // 同步方法
     addTodo(state, todo) {
       const id = state.length;
       state.push({
@@ -52,16 +52,15 @@ export default {
       });
     },
 
+    // 同步方法
     completeTodo(state, id) {
       const ele = state.find((v) => v.id === id);
       if (ele) {
         ele.status = 1;
       }
     },
-  },
 
-  // 异步方法
-  effects: {
+    // 异步方法
     async load(produce) {
       const result = await new Promise((resolve) => {
         setTimeout(() => {
@@ -82,7 +81,7 @@ export default {
         });
       });
     },
-  },
+  }
 };
 
 

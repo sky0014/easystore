@@ -93,6 +93,25 @@ function useData(path) {
   return useSelector((state) => internalGetData(state, path));
 }
 
+const asyncReg = /^function.*{\s*return\s+\w+\(/;
+function isAsync(func) {
+  if (func.constructor && func.constructor.name === "AsyncFunction") {
+    return true;
+  }
+
+  const funcStr = func.toString();
+
+  if (funcStr.indexOf("regeneratorRuntime") !== -1) {
+    return true;
+  }
+
+  if (asyncReg.test(funcStr)) {
+    return true;
+  }
+
+  return false;
+}
+
 function register(m) {
   if (moduleMap[m.id]) {
     throw new Error(`[${PREFIX}] module id=${m.id} already exist!`);
@@ -102,44 +121,37 @@ function register(m) {
 
   const localActions = (m[Symbol("actions")] = {});
 
-  m.reducers &&
-    Object.keys(m.reducers).forEach((k) => {
+  m.actions &&
+    Object.keys(m.actions).forEach((k) => {
       const path = `${m.id}/${k}`;
-      reducers[path] = m.reducers[k];
-      // create actions
-      actions[path] = localActions[k] = (...params) => {
-        store.dispatch({
-          type: path,
-          payload: params,
-        });
-      };
-    });
+      const func = m.actions[k];
 
-  m.effects &&
-    Object.keys(m.effects).forEach((k) => {
-      const path = `${m.id}/${k}`;
-
-      // check duplicated reducers/effects
-      if (actions[path]) {
-        throw new Error(
-          `[${PREFIX}] unsupport duplicated reducers/effects, check it: ${path}`
-        );
+      if (!isAsync(func)) {
+        reducers[path] = func;
+        // create actions
+        actions[path] = localActions[k] = (...params) => {
+          store.dispatch({
+            type: path,
+            payload: params,
+          });
+        };
+      } else {
+        const produce = (func) => {
+          store.dispatch({
+            type: `${path} async PRODUCE`,
+            skipCheck: true,
+            produce: func,
+          });
+        };
+        const bindFunc = func.bind(localActions);
+        actions[path] = localActions[k] = async (...params) => {
+          store.dispatch({
+            type: `${path} async START`,
+            skipCheck: true,
+          });
+          return await bindFunc(produce, ...params);
+        };
       }
-
-      const produce = (func) => {
-        store.dispatch({
-          type: `${path} async PRODUCE`,
-          skipCheck: true,
-          produce: func,
-        });
-      };
-      actions[path] = localActions[k] = async (...params) => {
-        store.dispatch({
-          type: `${m.id}/${k} async START`,
-          skipCheck: true,
-        });
-        return await m.effects[k].bind(localActions)(produce, ...params);
-      };
     });
 
   if (!store) {

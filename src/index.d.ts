@@ -6,16 +6,14 @@ export interface StoreModule<T> {
   id: string;
   /** 默认state */
   state: T;
-  /** 同步方法 */
-  reducers: {
-    [key: string]: (state: T, ...args: any[]) => void;
-  };
-  /** 异步方法 */
-  effects: {
-    [key: string]: (
-      produce: (fn: (state: T) => void) => void,
-      ...args: any[]
-    ) => Promise<any>;
+  /** actions */
+  actions: {
+    [key: string]:
+      | ((state: T, ...args: any[]) => void) // 同步方法
+      | ((
+          produce: (fn: (state: T) => void) => void,
+          ...args: any[]
+        ) => Promise<any>); // 异步方法
   };
 }
 
