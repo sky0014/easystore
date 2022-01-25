@@ -1,8 +1,9 @@
 {
   "name": "@sky0014/easystore",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "An easy store for react and hooks.",
   "main": "lib/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "babel src -d lib",
     "pub": "npm run build && npm publish --registry=https://registry.npmjs.org --access public"
