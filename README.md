@@ -13,6 +13,18 @@ npm install @sky0014/easystore
 ## Usage
 
 ```js
+// entry.js
+import React from "react";
+import ReactDOM from "react-dom";
+import { withStore } from "@sky0014/easystore";
+import App from "./app";
+import store from "./store";
+
+const StoreApp = withStore(store, App);
+
+ReactDOM.render(<StoreApp />, document.getElementById("app"));
+
+
 // store.js
 import { createStore, register } from "@sky0014/easystore";
 import header from "./header/module";

@@ -1,10 +1,11 @@
 {
   "name": "@sky0014/easystore",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "An easy store for react and hooks.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "pub": "npm publish --registry=https://registry.npmjs.org --access public"
+    "build": "babel src -d lib",
+    "pub": "npm run build && npm publish --registry=https://registry.npmjs.org --access public"
   },
   "repository": {
     "type": "git",
@@ -24,12 +25,22 @@
   "peerDependencies": {
     "react": ">=16.8.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/preset-env": "^7.16.11"
+  },
   "dependencies": {
+    "@babel/runtime": "^7.16.7",
     "@sky0014/logger": "^1.0.4",
     "immer": "^9.0.5",
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
     "redux-logger": "^3.0.6"
-  }
+  },
+  "browserslist": [
+    "chrome 55",
+    "firefox 53"
+  ]
 }

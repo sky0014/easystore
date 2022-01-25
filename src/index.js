@@ -94,15 +94,15 @@ function useData(path) {
   return useSelector((state) => internalGetData(state, path));
 }
 
-const asyncReg = /^function.*{\s*return\s+\w+\(/;
-function isAsync(func) {
+const asyncReg = /return\s+[^\s;]+?\(/;
+function isAsyncAction(func) {
   if (func.constructor && func.constructor.name === "AsyncFunction") {
     return true;
   }
 
   const funcStr = func.toString();
 
-  if (funcStr.indexOf("regeneratorRuntime") !== -1) {
+  if (funcStr.indexOf("regenerator") !== -1) {
     return true;
   }
 
@@ -127,7 +127,7 @@ function register(m) {
       const path = `${m.id}/${k}`;
       const func = m.actions[k];
 
-      if (!isAsync(func)) {
+      if (!isAsyncAction(func)) {
         reducers[path] = func;
         // create actions
         actions[path] = localActions[k] = (...params) => {
@@ -189,11 +189,11 @@ function createStore({ middlewares, debug } = {}) {
 }
 
 function withStore(store, App) {
-  return function Wrapper() {
-    return (
-      <Provider store={store}>
-        <App />
-      </Provider>
+  return function Wrapper(props = {}) {
+    return React.createElement(
+      Provider,
+      { store },
+      React.createElement(App, props)
     );
   };
 }

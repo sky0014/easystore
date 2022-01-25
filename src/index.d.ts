@@ -47,12 +47,7 @@ export function register<T>(module: StoreModule<T>): void;
  */
 export function call<T>(path: string, ...params: any[]): Promise<T>;
 /**
- * 创建Store，创建完之后使用Provider注入
- * ```jsx
-  <Provider store={store}>
-    <App />
-  </Provider>,
- * ```
+ * 创建Store，创建完之后使用`withStore`对入口APP组件进行连接
  * @param config store配置
  */
 export function createStore(config: Config): Store;
