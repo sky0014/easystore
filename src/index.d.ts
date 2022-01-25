@@ -1,5 +1,7 @@
+import React, { ComponentType } from "react";
 import { Middleware, createStore as _createStore } from "redux";
-import { Provider } from "react-redux";
+
+type Store = ReturnType<typeof _createStore>;
 
 export interface StoreModule<T> {
   /** 模块唯一id */
@@ -24,18 +26,16 @@ interface Config {
   debug?: boolean;
 }
 
-/** 同react-redux Provider */
-export { Provider };
 /**
  * 获取store里的数据
  * @param path 数据路径，以.分割，例如：app.name
  */
-export function getData(path: string): any;
+export function getData<T>(path: string): T;
 /**
  * 获取store里的数据(react hooks)
  * @param path 数据路径，以 . 号分割，例如：app.name
  */
-export function useData(path: string): any;
+export function useData<T>(path: string): T;
 /**
  * 注册模块，支持动态注册
  */
@@ -55,4 +55,12 @@ export function call<T>(path: string, ...params: any[]): Promise<T>;
  * ```
  * @param config store配置
  */
-export function createStore(config: Config): ReturnType<typeof _createStore>;
+export function createStore(config: Config): Store;
+/**
+ * 连接store
+ * @param store store对象
+ * @param App app入口
+ *
+ * @returns 连接后的React.FC组件
+ */
+export function withStore(store: Store, App: ComponentType): React.FC;

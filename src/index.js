@@ -3,6 +3,7 @@ import { useSelector, Provider } from "react-redux";
 import { applyMiddleware, compose, createStore as _createStore } from "redux";
 import reduxLogger from "redux-logger";
 import { createLogger } from "@sky0014/logger";
+import React from "react";
 
 const PREFIX = "easystore";
 
@@ -187,4 +188,14 @@ function createStore({ middlewares, debug } = {}) {
   return (store = _createStore(reducer, initialState, compose(...middlewares)));
 }
 
-export { Provider, getData, useData, register, call, createStore };
+function withStore(store, App) {
+  return function Wrapper() {
+    return (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+  };
+}
+
+export { getData, useData, register, call, createStore, withStore };
