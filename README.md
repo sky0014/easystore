@@ -24,6 +24,7 @@ export const { store, getData, useData, register, call, withStore } =
     debug: true,
     middlewares: [], // redux middlewares
     modules: { header, todo },
+    // combineReducer: rootReducer => persistReducer(persistConfig, rootReducer) // use with redux-persist
   });
 
 // register支持动态注册

@@ -5,6 +5,7 @@ import {
   compose,
   createStore as _createStore,
   Middleware,
+  Reducer,
 } from "redux";
 import reduxLogger from "redux-logger";
 import { createLogger } from "@sky0014/logger";
@@ -64,6 +65,7 @@ interface createStoreOptions<T extends Record<string, StoreModule<any>>> {
   debug?: boolean;
   middlewares?: Middleware[];
   modules?: T;
+  combineReducer?: (reducer: Reducer) => Reducer;
 }
 
 let storeNumber = 0;
@@ -75,7 +77,13 @@ function createStore<
   },
   Actions1 = MapActions<T>,
   Actions2 = UnionToIntersection<Actions1[keyof Actions1]>
->({ middlewares, debug, name, modules }: createStoreOptions<T> = {}) {
+>({
+  middlewares,
+  debug,
+  name,
+  modules,
+  combineReducer,
+}: createStoreOptions<T> = {}) {
   const logger = createLogger();
 
   logger.initLogger({
@@ -115,7 +123,7 @@ function createStore<
     },
   };
 
-  const reducer = produce((state, action: ReduxAction<any>) => {
+  const reducer: Reducer = produce((state, action: ReduxAction<any>) => {
     const r = reducers[action.type];
     if (!r && !action.skipCheck) {
       if (action.type.indexOf("@@redux") === -1) {
@@ -202,7 +210,7 @@ function createStore<
   }
 
   const store = _createStore(
-    reducer,
+    combineReducer ? combineReducer(reducer) : reducer,
     initialState,
     compose(...middlewares.map((v) => applyMiddleware(v)))
   );
