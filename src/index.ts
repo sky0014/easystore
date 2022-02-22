@@ -208,12 +208,16 @@ function createStore<
   );
 
   function getData<T>(selector: Selector<State, T>) {
-    return selector(store.getState());
+    try {
+      return selector(store.getState());
+    } catch {}
   }
 
   // react hooks
   function useData<T>(selector: Selector<State, T>) {
-    return useSelector<State, T>(selector);
+    try {
+      return useSelector<State, T>(selector);
+    } catch {}
   }
 
   function call<T extends keyof Actions2>(

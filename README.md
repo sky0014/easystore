@@ -108,7 +108,7 @@ export default {
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app";
-import { store, withStore } from "./store";
+import { withStore } from "./store";
 
 const StoreApp = withStore(App);
 
