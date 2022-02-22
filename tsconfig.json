@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": false,
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "lib": ["ES2015"]
+  },
+  "include": ["src/**/*"]
+}

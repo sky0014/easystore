@@ -12,50 +12,57 @@ npm install @sky0014/easystore
 
 ## Usage
 
-```js
-// entry.js
-import React from "react";
-import ReactDOM from "react-dom";
-import { withStore } from "@sky0014/easystore";
-import App from "./app";
-import store from "./store";
-
-const StoreApp = withStore(store, App);
-
-ReactDOM.render(<StoreApp />, document.getElementById("app"));
-
-
-// store.js
-import { createStore, register } from "@sky0014/easystore";
+```typescript
+// store.ts
+import { createStore } from "@sky0014/easystore";
 import header from "./header/module";
 import todo from "../page/todo/module";
 
-// 支持动态注册
-register(header);
-register(todo);
+export const { store, getData, useData, register, call, withStore } =
+  createStore({
+    name: "easystore",
+    debug: true,
+    middlewares: [], // redux middlewares
+    modules: { header, todo },
+  });
 
-export default createStore({
-  debug: true,
-});
+// register支持动态注册
+// 如果采用动态注册，在createStore时请传入所有模块类型以便于获得代码提示
+// 例如：
+// createStore<{
+//   header: typeof header,
+//   todo: typeof todo,
+//   ...
+// }>(...)
 
+// todo/module.ts
+import { Produce } from "@sky0014/easystore";
 
-// module.js
+export type TodoData = {
+  id: number;
+  todo: string;
+  status: number;
+  other?: "one" | "two" | "three";
+}[];
+
+const defaultState: TodoData = [
+  {
+    id: 0,
+    todo: "something need todo",
+    status: 0,
+  },
+];
+
 export default {
   // 模块唯一id
   id: "todo",
 
   // 默认state
-  state: [
-    {
-      id: 0,
-      todo: "something need todo",
-      status: 0,
-    },
-  ],
+  state: defaultState,
 
   actions: {
     // 同步方法
-    addTodo(state, todo) {
+    addTodo(state: TodoData, todo: string) {
       const id = state.length;
       state.push({
         id,
@@ -65,7 +72,7 @@ export default {
     },
 
     // 同步方法
-    completeTodo(state, id) {
+    completeTodo(state: TodoData, id: number) {
       const ele = state.find((v) => v.id === id);
       if (ele) {
         ele.status = 1;
@@ -73,7 +80,7 @@ export default {
     },
 
     // 异步方法
-    async load(produce) {
+    async load(produce: Produce<TodoData>) {
       const result = await new Promise((resolve) => {
         setTimeout(() => {
           resolve(["1111111", "22222222", "333333", "55555555", "44444"]);
@@ -81,7 +88,8 @@ export default {
       });
       // 1. 调用同步方法修改
       // result.forEach(this.addTodo)
-      // or 2. 使用produce直接修改state
+      // or
+      // 2. 使用produce直接修改state
       produce((state) => {
         result.forEach((todo) => {
           const id = state.length;
@@ -93,13 +101,22 @@ export default {
         });
       });
     },
-  }
+  },
 };
 
+// entry.ts
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
+import { store, withStore } from "./store";
 
-// todo.js
+const StoreApp = withStore(App);
+
+ReactDOM.render(<StoreApp />, document.getElementById("app"));
+
+// todo.ts
 import React, { useEffect } from "react";
-import { call, useData } from "@sky0014/easystore";
+import { call, useData } from "./store";
 
 function Todo() {
   console.log("render todo");
@@ -144,7 +161,6 @@ function Todo() {
 }
 
 export default Todo;
-
 ```
 
 ## Publish
