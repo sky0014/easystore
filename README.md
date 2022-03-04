@@ -124,7 +124,7 @@ function Todo() {
 
   // 支持多层级获取，如：todo.a.b.c
   // 在非组件中，可使用 getData 方法获取
-  const todo = useData("todo") || [];
+  const todo = useData(state => state.todo) || [];
 
   useEffect(() => {
     call("todo/load");
