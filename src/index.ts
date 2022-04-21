@@ -262,7 +262,7 @@ function createStore<
   };
 }
 
-const asyncReg = /return\s+[^\s;]+?\(/;
+const asyncReg = /^function[^{]*?{\s*return\s+[^(,;\s]+\(/;
 function isAsyncAction(func: Function) {
   if (func.constructor && func.constructor.name === "AsyncFunction") {
     return true;
